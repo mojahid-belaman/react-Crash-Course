@@ -1,8 +1,10 @@
+import PostList from "./components/PostList";
+
 function App() {
   return (
-    <div className="h-screen bg-purple-400">
-      <h1 className="text-white text-center">Hello World</h1>
-    </div>
+    <main className="min-h-screen bg-gradient-to-b from-purple-600">
+      <PostList />
+    </main>
   );
 }
 
