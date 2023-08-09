@@ -1,14 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 
-const NewPost = (props) => {
+const NewPost = ({ onCancel, onAddPost }) => {
+  const [enteredBody, setEnteredBody] = useState("");
+  const [enteredAuthor, setEnteredAuthor] = useState("");
+
   const bodyChangeHandler = (e) => {
-    props.onBodyChange(e.target.value);
+    setEnteredBody(e.target.value);
   };
   const authorChangeHandler = (e) => {
-    props.onAuthorChange(e.target.value);
+    setEnteredAuthor(e.target.value);
   };
+  const submitHandler = (e) => {
+    e.preventDefault();
+    
+    if (enteredAuthor.length > 0 && enteredBody.length > 0) {
+      const data = {author: enteredAuthor, body: enteredBody}
+      onAddPost(prev => [data, ...prev])
+      onCancel();
+    }
+
+  }
   return (
-    <form className="bg-purple-200 p-5 w-96 mx-auto rounded-sm">
+    <form className="bg-purple-200 p-5 w-96 mx-auto rounded-sm" onSubmit={submitHandler}>
       <div>
         <label htmlFor="body" className="block mb-2 font-bold">
           Text
@@ -34,6 +47,14 @@ const NewPost = (props) => {
           required
           onChange={authorChangeHandler}
         />
+      </div>
+      <div className="flex justify-end gap-4 pt-4">
+        <button type="button" onClick={onCancel}>
+          Cancel
+        </button>
+        <button className="py-2 px-4 text-white rounded-md bg-purple-900 hover:bg-purple-950">
+          Submit
+        </button>
       </div>
     </form>
   );
