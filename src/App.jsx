@@ -10,7 +10,7 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-600">
       <MainHeader toggele={toggeleModal} />
-      <main>
+      <main className="max-w-4xl mx-auto">
         <PostList modalIsVisible={modalIsVisible} toggeleModal={toggeleModal}  />
       </main>
     </div>
