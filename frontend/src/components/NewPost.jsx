@@ -12,16 +12,18 @@ const NewPost = ({ onCancel, onAddPost }) => {
   };
   const submitHandler = (e) => {
     e.preventDefault();
-    
+
     if (enteredAuthor.length > 0 && enteredBody.length > 0) {
-      const data = {author: enteredAuthor, body: enteredBody}
-      onAddPost(prev => [data, ...prev])
+      const data = { author: enteredAuthor, body: enteredBody };
+      onAddPost(data);
       onCancel();
     }
-
-  }
+  };
   return (
-    <form className="bg-purple-200 p-5 w-96 mx-auto rounded-sm" onSubmit={submitHandler}>
+    <form
+      className="bg-purple-200 p-5 w-96 mx-auto rounded-sm"
+      onSubmit={submitHandler}
+    >
       <div>
         <label htmlFor="body" className="block mb-2 font-bold">
           Text
