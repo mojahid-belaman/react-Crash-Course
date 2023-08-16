@@ -1,15 +1,15 @@
 import { Form, redirect, useNavigate, useNavigation } from "react-router-dom";
 import Modal from "../components/Modal";
 
-const NewPost = () => {
+const NewPost = ({ post }) => {
   const navigate = useNavigate();
   const navigation = useNavigation();
-
-  const isSubmit = navigation.state === "submitting";
 
   const clickHandler = () => {
     navigate("..");
   };
+
+  const isSubmit = navigation.state === "submitting";
 
   return (
     <Modal>
@@ -28,7 +28,8 @@ const NewPost = () => {
             placeholder="Enter Description about The Author"
             required
             rows={3}
-            onChange={bodyChangeHandler}
+            disabled={post ? true : false}
+            defaultValue={post && post.body}
           />
         </div>
         <div>
@@ -41,16 +42,24 @@ const NewPost = () => {
             name="name"
             placeholder="Enter The Full Name"
             required
-            onChange={authorChangeHandler}
+            disabled={post ? true : false}
+            defaultValue={post && post.author}
           />
         </div>
         <div className="flex justify-end gap-4 pt-4">
           <button type="button" onClick={clickHandler}>
             Cancel
           </button>
-          <button className="py-2 px-4 text-white rounded-md bg-purple-900 hover:bg-purple-950">
-            {isSubmit ? "Submitting..." : "Submit"}
-          </button>
+          {!post && (
+            <button
+              className={`py-2 px-4 text-white rounded-md bg-purple-900 hover:bg-purple-950 ${
+                isSubmit && "bg-gray-400 text-black hover:bg-gray-400"
+              }`}
+              disabled={isSubmit}
+            >
+              {isSubmit ? "Submitting..." : "Submit"}
+            </button>
+          )}
         </div>
       </Form>
     </Modal>
@@ -62,6 +71,7 @@ export default NewPost;
 export async function action({ request }) {
   const data = await request.formData();
   const post = { author: data.get("name"), body: data.get("body") };
+  await new Promise((resolve, reject) => setTimeout(() => resolve(), 1500));
   await fetch("http://localhost:8080/posts", {
     method: "POST",
     body: JSON.stringify(post),
